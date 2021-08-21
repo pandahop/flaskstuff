@@ -1,0 +1,82 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style type="text/css">
+        body,html,#container{
+            height: 100%;
+            margin: 0px;
+        }
+    </style>
+    <title>高德地图</title>
+</head>
+<body><div id="container" tabindex="0"></div>
+<div id="zoomin" style="position: absolute; left: 10px; bottom: 120px; width: 60px; height: 40px;z-index: 160; background-color:#008cff;color:#fff; border-radius: 3px; line-height: 40px; text-align: center; cursor: pointer;">放大</div>
+<div id="zoomout" style="position: absolute; left: 10px; bottom: 60px; width: 60px; height: 40px;z-index: 160; background-color:#008cff;color:#fff; border-radius: 3px; line-height: 40px; text-align: center; cursor: pointer;">缩小</div>
+ 
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.15&key={{ token }}"></script>
+<script type="text/javascript">
+   /* var map = new AMap.Map('container',{
+        zoom: 15//用来设置地图的级别在高德中zoom的取值范围为【3-18】其中值越大显示的越详细，也可以通过setZoom（）来设置
+    });*///这个与下面的一样
+    var map= new AMap.Map('container');
+    map.setCity("北京市");//用来定位那个城市
+    map.setZoom(15);
+ 
+   //进行地图的缩放函数的绑定
+    document.getElementById('zoomin').onclick = function(){
+        //放大地图
+        map.zoomIn();
+    };
+    document.getElementById('zoomout').onclick = function () {
+        //缩小地图
+        map.zoomOut();
+    };
+ 
+   ///加载比例尺控件
+ 
+    map.plugin(['AMap.Scale'], function(){
+        var scale = new AMap.Scale();
+        map.addControl(scale);
+    });
+ 
+    //加载地图类型
+ 
+    map.plugin(['AMap.MapType'], function(){
+        var type= new AMap.MapType();
+        map.addControl(type);
+    });
+ 
+    //加载鹰眼工具
+ 
+    map.plugin(['AMap.OverView'], function () {
+        var view = new AMap.OverView();
+        //因为在LBS中鹰眼视图工具默认为BOOL:False,所以在测试时可以用open函数来让它默认为打开；
+        view.open();
+        map.addControl(view);
+    });
+ 
+    //加载工具条模块
+ 
+    map.plugin(['AMap.ToolBar'], function(){
+        var tool = new AMap.ToolBar();
+        map.addControl(tool);
+    });
+    // 测距工具控件
+ 
+   //测量面积控件
+   map.plugin(['AMap.MouseTool'], function(){
+        var tool = new AMap.MouseTool(map);
+        tool.measureArea();
+    });
+ 
+ /*  // 测量两点间长度控件
+    map.plugin(['AMap.RangingTool'], function () {
+        var tool = new AMap.RangingTool(map);
+        tool.turnOn();
+    })*/
+ 
+</script>
+</body>
+</html>
